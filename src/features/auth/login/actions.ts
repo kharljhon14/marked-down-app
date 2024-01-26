@@ -6,7 +6,6 @@ import { LoginSchema } from '@/schemas/auth';
 import { compare } from 'bcrypt';
 import { SignJWT } from 'jose';
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 
 export type State = {
   errors?: {
@@ -16,7 +15,7 @@ export type State = {
   message?: string | null;
 };
 
-export async function login(prevState: State, formData: FormData): Promise<State> {
+export async function login(_prevState: State, formData: FormData): Promise<State> {
   const validatedFields = LoginSchema.safeParse({
     username: formData.get('username'),
     password: formData.get('password'),

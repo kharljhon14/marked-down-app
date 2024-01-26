@@ -10,8 +10,6 @@ export default function LoginForm() {
 
   const { pending } = useFormStatus();
 
-  console.log(pending);
-
   return (
     <form action={formAction}>
       <div className="flex flex-col space-y-2 max-w-lg">
