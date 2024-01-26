@@ -1,12 +1,16 @@
 'use client';
 
-import { useFormState } from 'react-dom';
+import { useFormState, useFormStatus } from 'react-dom';
 import { login } from './actions';
 
 export default function LoginForm() {
   const initialState = { message: null, errors: {} };
 
   const [formState, formAction] = useFormState(login, initialState);
+
+  const { pending } = useFormStatus();
+
+  console.log(pending);
 
   return (
     <form action={formAction}>
@@ -23,7 +27,7 @@ export default function LoginForm() {
           type="password"
         />
 
-        <button>Log In</button>
+        <button>{pending ? 'Loading...' : 'Log In'}</button>
       </div>
       <div>
         {formState.errors?.username}
