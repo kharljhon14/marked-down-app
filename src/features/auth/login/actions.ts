@@ -58,14 +58,16 @@ export async function login(_prevState: State, formData: FormData): Promise<Stat
     .setExpirationTime('2w')
     .sign(new TextEncoder().encode(config.JWT_SECRET));
 
+  const oneDay = 24 * 60 * 60 * 1000;
+
   cookies().set('jwt-token', token, {
     sameSite: 'strict',
     httpOnly: true,
     secure: true,
+    expires: Date.now() + oneDay,
   });
 
   return {
     message: 'Success',
-    errors: {},
   };
 }
