@@ -3,6 +3,7 @@
 import { sql } from '@/lib/server/db';
 import { RegisterSchema } from '@/schemas/auth';
 import { hash } from 'bcrypt';
+import { redirect } from 'next/navigation';
 
 interface State {
   errors?: {
@@ -54,7 +55,5 @@ export async function registerAction(_prevState: State, formData: FormData): Pro
     //Add logic here
   }
 
-  return {
-    message: 'Success',
-  };
+  redirect('/login');
 }
