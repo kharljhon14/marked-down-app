@@ -1,3 +1,6 @@
+'use client';
+
+import { NotesProvider } from '@/context/notesContext';
 import { Box, Flex } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 
@@ -9,8 +12,10 @@ interface Props {
 export default function Layout({ sidebar, content }: Props) {
   return (
     <Flex>
-      <Box w="33%">{sidebar}</Box>
-      <Box>{content}</Box>
+      <NotesProvider>
+        <Box w="33%">{sidebar}</Box>
+        <Box>{content}</Box>
+      </NotesProvider>
     </Flex>
   );
 }
