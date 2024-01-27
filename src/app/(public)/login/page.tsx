@@ -1,10 +1,10 @@
+import AuthCard from '@/features/auth/AuthCard';
 import LoginForm from '@/features/auth/login/LoginForm';
 
 export default function Page() {
   return (
-    <div>
-      <h1>Log In</h1>
+    <AuthCard title="Log In">
       <LoginForm />
-    </div>
+    </AuthCard>
   );
 }

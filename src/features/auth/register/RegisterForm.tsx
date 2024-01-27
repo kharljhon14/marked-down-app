@@ -1,8 +1,9 @@
 'use client';
 
-import { Button, Input } from '@chakra-ui/react';
+import { Button, Input, Stack } from '@chakra-ui/react';
 import { useFormState } from 'react-dom';
 import { registerAction } from './registerAction';
+import PasswordInput from '@/components/PasswordInput';
 
 const initialState = { message: null, errors: {} };
 
@@ -13,31 +14,39 @@ export default function RegisterForm() {
 
   return (
     <form action={action}>
-      <div className="space-y-2">
-        <Input
-          name="username"
-          placeholder="Username"
-        />
-        <span className="text-red-400 text-xs">{state.errors?.username}</span>
+      <Stack spacing={3}>
+        <div>
+          <Input
+            name="username"
+            size="lg"
+            placeholder="Username"
+          />
+          <span className="text-red-400 text-xs">{state.errors?.username}</span>
+        </div>
 
-        <Input
-          name="password"
-          placeholder="Password"
-          type="password"
-        />
-        <span className="text-red-400 text-xs">{state.errors?.password}</span>
+        <div>
+          <PasswordInput
+            name="password"
+            size="lg"
+            placeholder="Password"
+          />
+          <span className="text-red-400 text-xs">{state.errors?.password}</span>
+        </div>
 
-        <Input
-          name="confirmPassword"
-          placeholder="Confirm Password"
-          type="password"
-        />
-        <span className="text-red-400 text-xs">{state.errors?.confirmPassword}</span>
-      </div>
+        <div>
+          <PasswordInput
+            name="confirmPassword"
+            size="lg"
+            placeholder="Confirm Password"
+          />
+          <span className="text-red-400 text-xs">{state.errors?.confirmPassword}</span>
+        </div>
+      </Stack>
 
       <Button
-        className="mt-4 w-full"
-        colorScheme="teal"
+        marginTop="1rem"
+        w="100%"
+        colorScheme="blue"
         type="submit"
       >
         Register
