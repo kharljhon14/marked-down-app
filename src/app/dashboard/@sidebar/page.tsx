@@ -1,9 +1,13 @@
-import { Container, Heading } from '@chakra-ui/react';
+import { getCurrentUser } from '@/lib/server/auth';
+import { Box, Heading, Text } from '@chakra-ui/react';
 
-export default function SideBarPage() {
+export default async function SideBarPage() {
+  const user = await getCurrentUser();
+
   return (
-    <Container>
+    <Box>
       <Heading>Sidebar</Heading>
-    </Container>
+      <Text>Signed in as: {user?.username}</Text>
+    </Box>
   );
 }
