@@ -4,6 +4,9 @@ import { useNotesDispatch, useNotesState } from '@/context/notesContext';
 import { fetchNotes } from '@/lib/client/api';
 import { useEffect } from 'react';
 
+import NoteList from './NoteList';
+import { Box } from '@chakra-ui/react';
+
 async function init() {
   console.log('Init');
   const notes = await fetchNotes();
@@ -22,8 +25,8 @@ export default function NoteContainer() {
   if (!state.rootNotes) return <div>Loading...</div>;
 
   return (
-    <div>
-      <h1>Note Container</h1>
-    </div>
+    <Box>
+      <NoteList />
+    </Box>
   );
 }

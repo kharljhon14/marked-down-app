@@ -6,8 +6,14 @@ export default async function SideBarPage() {
   const user = await getCurrentUser();
 
   return (
-    <Box>
-      <Heading>Sidebar</Heading>
+    <Box
+      padding="1rem"
+      borderRight="solid 1px"
+      borderColor="gray.500"
+      maxH="100vh"
+      overflowY="scroll"
+    >
+      <Heading>Notes</Heading>
       <Text>Signed in as: {user?.username}</Text>
       <NoteContainer />
     </Box>
