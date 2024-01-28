@@ -1,3 +1,5 @@
+import { DateTime } from 'luxon';
+
 export interface NoteData {
   id: string;
   user_id: string;
@@ -5,8 +7,8 @@ export interface NoteData {
   title: string;
   content: string;
   is_published: boolean;
-  created_At: Date;
-  update_At: Date;
+  created_at: DateTime;
+  updated_at: DateTime;
   child_notes: Array<NoteData>;
   child_count: number;
 }
