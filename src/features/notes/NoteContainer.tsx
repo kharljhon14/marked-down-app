@@ -6,9 +6,9 @@ import { useEffect } from 'react';
 
 import NoteList from './NoteList';
 import { Box } from '@chakra-ui/react';
+import { NoteData } from '@/types/note';
 
-async function init() {
-  console.log('Init');
+async function init(): Promise<NoteData[]> {
   const notes = await fetchNotes();
 
   return notes;
@@ -17,6 +17,7 @@ async function init() {
 export default function NoteContainer() {
   const state = useNotesState();
   const dispatch = useNotesDispatch();
+  dispatch;
 
   useEffect(() => {
     init().then((result) => dispatch({ type: 'set_root_notes', payload: result }));

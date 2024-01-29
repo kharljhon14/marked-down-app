@@ -5,8 +5,13 @@ interface NotesState {
   rootNotes: Array<NoteData>;
 }
 
+interface ActionPayload {
+  type: 'set_root_notes';
+  payload: Array<NoteData>;
+}
+
 export const NotesContext = createContext<NotesState | undefined>(undefined);
-export const NotesDispatchContext = createContext<Dispatch<any> | undefined>(undefined);
+export const NotesDispatchContext = createContext<Dispatch<ActionPayload> | undefined>(undefined);
 
 export function useNotesState() {
   const context = useContext(NotesContext);
@@ -22,16 +27,14 @@ export function useNotesDispatch() {
   return context;
 }
 
-function setRootNotes(state: NotesState, action: any) {
+function setRootNotes(state: NotesState, action: ActionPayload) {
   return {
     ...state,
     rootNotes: action.payload,
   };
 }
 
-function reducer(state: NotesState, action: any) {
-  console.log(state, action);
-
+function reducer(state: NotesState, action: ActionPayload) {
   switch (action.type) {
     case 'set_root_notes':
       return setRootNotes(state, action);
@@ -41,7 +44,7 @@ function reducer(state: NotesState, action: any) {
   }
 }
 
-const initialState = {
+const initialState: NotesState = {
   rootNotes: [],
 };
 
