@@ -8,8 +8,8 @@ interface Props {
 
 export default function Note({ note }: Props) {
   return (
-    <Container
-      maxW="container.sm"
+    <Box
+      w="100%"
       bg="blue.100"
       borderRadius=".8rem"
       shadow="lg"
@@ -45,6 +45,6 @@ export default function Note({ note }: Props) {
           Status: <span className="font-bold">{note.is_published ? 'Published' : 'Draft'}</span>
         </Text>
       </VStack>
-    </Container>
+    </Box>
   );
 }

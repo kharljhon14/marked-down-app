@@ -1,6 +1,5 @@
 import { getCurrentUser } from '@/lib/server/auth';
 import { sql } from '@/lib/server/db';
-import { use } from 'react';
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);

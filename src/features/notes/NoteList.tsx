@@ -11,9 +11,10 @@ export default function NoteList() {
       divider={<StackDivider borderColor="gray.300" />}
     >
       {state.rootNotes.map((note) => (
-        <Box key={note.id}>
-          <Note note={note} />
-        </Box>
+        <Note
+          key={note.id}
+          note={note}
+        />
       ))}
     </VStack>
   );
