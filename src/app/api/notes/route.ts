@@ -1,5 +1,6 @@
 import { getCurrentUser } from '@/lib/server/auth';
 import { sql } from '@/lib/server/db';
+import { use } from 'react';
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -45,4 +46,17 @@ export async function GET(req: Request) {
   });
 
   return Response.json({ notes: noteRes.rows });
+}
+
+export async function POST(_req: Request) {
+  const user = await getCurrentUser();
+
+  if (!user) return Response.json({ error: 'User does not exist' }, { status: 404 });
+
+  const noteRes = await sql(
+    "insert into notes (title, user_id) values ('Untitled', $1) returning *",
+    [user.id]
+  );
+
+  return Response.json({ data: noteRes.rows[0] });
 }

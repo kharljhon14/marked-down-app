@@ -1,4 +1,5 @@
 import { NoteData } from '@/types/note';
+import { cache } from 'react';
 import { DateTime } from 'luxon';
 
 function transformJsonToNote(json: any): NoteData {
@@ -10,7 +11,7 @@ function transformJsonToNote(json: any): NoteData {
   };
 }
 
-export async function fetchNotes(parent_id?: string) {
+export async function fetchNotes(parent_id?: string): Promise<NoteData[]> {
   let queryString = '';
 
   if (parent_id) {
