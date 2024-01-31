@@ -47,6 +47,36 @@ function addNewNoteToRootNotes(state: NotesState, action: ActionPayload<NoteData
   };
 }
 
+function sortNotes(state: NotesState, action: ActionPayload<string>) {
+  const newState = {
+    ...state,
+  };
+
+  sortNotesRecursively(newState.rootNotes, action.payload);
+
+  return newState;
+}
+
+function sortNotesRecursively(notes: Array<NoteData>, sortKey: string) {
+  notes.sort((a, b) => {
+    const reverse = sortKey.startsWith('-');
+
+    const key = reverse ? sortKey.slice(1) : sortKey;
+
+    if (a[key as keyof NoteData] < b[key as keyof NoteData]) return reverse ? 1 : -1;
+
+    if (a[key as keyof NoteData] > b[key as keyof NoteData]) return reverse ? -1 : 1;
+
+    return 0;
+  });
+
+  notes.forEach((note) => {
+    if (note.child_count > 0) {
+      sortNotesRecursively(note.child_notes, sortKey);
+    }
+  });
+}
+
 function reducer(state: NotesState, action: ActionPayload<any>) {
   switch (action.type) {
     case 'set_root_notes':
@@ -54,6 +84,9 @@ function reducer(state: NotesState, action: ActionPayload<any>) {
 
     case 'add_new_note_to_root_notes':
       return addNewNoteToRootNotes(state, action);
+
+    case 'sort_notes':
+      return sortNotes(state, action);
 
     default:
       return state;
