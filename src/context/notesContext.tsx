@@ -6,7 +6,7 @@ interface NotesState {
 }
 
 interface ActionPayload<T> {
-  type: 'set_root_notes' | 'add_new_note_to_root_notes';
+  type: 'set_root_notes' | 'add_new_note_to_root_notes' | 'sort_notes';
   payload: T;
 }
 

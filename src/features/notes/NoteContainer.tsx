@@ -8,6 +8,7 @@ import NoteList from './NoteList';
 import { Box } from '@chakra-ui/react';
 import { NoteData } from '@/types/note';
 import CreateNoteButton from './CreateNoteButton';
+import SortNotesSelect from './SortNotesSelect';
 
 async function init(): Promise<NoteData[]> {
   const notes = await fetchNotes();
@@ -18,7 +19,13 @@ async function init(): Promise<NoteData[]> {
 export default function NoteContainer() {
   const state = useNotesState();
   const dispatch = useNotesDispatch();
-  dispatch;
+
+  const handleChange = (value: string) => {
+    dispatch({
+      type: 'sort_notes',
+      payload: value,
+    });
+  };
 
   useEffect(() => {
     init().then((result) => dispatch({ type: 'set_root_notes', payload: result }));
@@ -28,6 +35,7 @@ export default function NoteContainer() {
 
   return (
     <Box>
+      <SortNotesSelect onChange={handleChange} />
       <CreateNoteButton />
       <NoteList />
     </Box>
