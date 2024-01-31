@@ -5,13 +5,15 @@ interface NotesState {
   rootNotes: Array<NoteData>;
 }
 
-interface ActionPayload {
-  type: 'set_root_notes';
-  payload: Array<NoteData>;
+interface ActionPayload<T> {
+  type: 'set_root_notes' | 'add_new_note_to_root_notes';
+  payload: T;
 }
 
 export const NotesContext = createContext<NotesState | undefined>(undefined);
-export const NotesDispatchContext = createContext<Dispatch<ActionPayload> | undefined>(undefined);
+export const NotesDispatchContext = createContext<Dispatch<ActionPayload<any>> | undefined>(
+  undefined
+);
 
 export function useNotesState() {
   const context = useContext(NotesContext);
@@ -27,17 +29,31 @@ export function useNotesDispatch() {
   return context;
 }
 
-function setRootNotes(state: NotesState, action: ActionPayload) {
+function setRootNotes(state: NotesState, action: ActionPayload<Array<NoteData>>) {
   return {
     ...state,
     rootNotes: action.payload,
   };
 }
 
-function reducer(state: NotesState, action: ActionPayload) {
+function addNewNoteToRootNotes(state: NotesState, action: ActionPayload<NoteData>) {
+  const newRootNotes = [...state.rootNotes];
+
+  newRootNotes.unshift(action.payload);
+
+  return {
+    ...state,
+    rootNotes: newRootNotes,
+  };
+}
+
+function reducer(state: NotesState, action: ActionPayload<any>) {
   switch (action.type) {
     case 'set_root_notes':
       return setRootNotes(state, action);
+
+    case 'add_new_note_to_root_notes':
+      return addNewNoteToRootNotes(state, action);
 
     default:
       return state;

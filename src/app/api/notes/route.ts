@@ -34,8 +34,6 @@ export async function GET(req: Request) {
     return map;
   }, {});
 
-  console.log(childNoteCountMap);
-
   noteRes.rows.forEach((row) => {
     if (childNoteCountMap.hasOwnProperty(row.id)) {
       row.child_count = childNoteCountMap[row.id];
@@ -57,5 +55,5 @@ export async function POST(_req: Request) {
     [user.id]
   );
 
-  return Response.json({ data: noteRes.rows[0] });
+  return Response.json({ note: noteRes.rows[0] });
 }

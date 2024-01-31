@@ -1,5 +1,4 @@
 import { NoteData } from '@/types/note';
-import { cache } from 'react';
 import { DateTime } from 'luxon';
 
 function transformJsonToNote(json: any): NoteData {
@@ -25,4 +24,12 @@ export async function fetchNotes(parent_id?: string): Promise<NoteData[]> {
   const transformed = json.notes?.map((data: any) => transformJsonToNote(data));
 
   return transformed;
+}
+
+export async function createNote() {
+  const res = await fetch('/api/notes', { method: 'POST' });
+
+  const json = await res.json();
+
+  return transformJsonToNote(json.note);
 }

@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import NoteList from './NoteList';
 import { Box } from '@chakra-ui/react';
 import { NoteData } from '@/types/note';
+import CreateNoteButton from './CreateNoteButton';
 
 async function init(): Promise<NoteData[]> {
   const notes = await fetchNotes();
@@ -27,6 +28,7 @@ export default function NoteContainer() {
 
   return (
     <Box>
+      <CreateNoteButton />
       <NoteList />
     </Box>
   );
