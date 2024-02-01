@@ -1,12 +1,37 @@
 import { NoteData } from '@/types/note';
 import { Box, Container, Heading, Text, VStack } from '@chakra-ui/react';
 import { DateTime } from 'luxon';
+import { DragEvent } from 'react';
 
 interface Props {
   note: NoteData;
 }
 
 export default function Note({ note }: Props) {
+  const handleDragStart = (e: DragEvent) => {
+    console.log('Drag Start');
+  };
+
+  const handleDragEnd = (e: DragEvent) => {
+    console.log('Drag End');
+  };
+
+  const handleDrop = (e: DragEvent) => {
+    console.log('Drop');
+  };
+
+  const handleDragOver = (e: DragEvent) => {
+    console.log('Drag Over');
+  };
+
+  const handleDragEnter = (e: DragEvent) => {
+    console.log('Drag Enter');
+  };
+
+  const handleDragLeave = (e: DragEvent) => {
+    console.log('Drag Leave');
+  };
+
   return (
     <Box
       w="100%"
@@ -14,6 +39,13 @@ export default function Note({ note }: Props) {
       borderRadius=".8rem"
       shadow="lg"
       p="1.2rem"
+      draggable
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+      onDrop={handleDrop}
+      onDragOver={handleDragOver}
+      onDragEnter={handleDragEnter}
+      onDragLeave={handleDragLeave}
     >
       <VStack
         spacing={4}
