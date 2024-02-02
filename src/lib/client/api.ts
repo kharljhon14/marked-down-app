@@ -1,5 +1,6 @@
 import { NoteData } from '@/types/note';
 import { DateTime } from 'luxon';
+import { json } from 'stream/consumers';
 
 function transformJsonToNote(json: any): NoteData {
   return {
@@ -32,4 +33,11 @@ export async function createNote() {
   const json = await res.json();
 
   return transformJsonToNote(json.note);
+}
+
+export async function updateParent(currentDraggingId: string, newParentId: string) {
+  await fetch(`/api/notes/${currentDraggingId}`, {
+    method: 'POST',
+    body: JSON.stringify({ parent_id: newParentId }),
+  });
 }

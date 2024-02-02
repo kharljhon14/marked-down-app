@@ -1,4 +1,5 @@
 import { useNotesDispatch, useNotesState } from '@/context/notesContext';
+import { updateParent } from '@/lib/client/api';
 import { NoteData } from '@/types/note';
 import { Box, Container, Heading, Text, VStack } from '@chakra-ui/react';
 import { DateTime } from 'luxon';
@@ -21,8 +22,8 @@ export default function Note({ note }: Props) {
     console.log('Drag End');
   };
 
-  const handleDrop = (e: DragEvent) => {
-    if (note.id === state.currentDragId) return;
+  const handleDrop = async (e: DragEvent) => {
+    if (note.id === state.currentDragId || !state.currentDragId) return;
 
     console.log('Drop', note.id);
     console.log('Current Drag Id', state.currentDragId);
@@ -30,6 +31,7 @@ export default function Note({ note }: Props) {
     // [Todo] Check if target note is descendant of current dragging note
 
     // Update parent api call
+    await updateParent(state.currentDragId, note.id);
 
     // Dispatch change parent event
   };
