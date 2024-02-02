@@ -37,7 +37,7 @@ export default function NoteContainer() {
     <Box>
       <SortNotesSelect onChange={handleChange} />
       <CreateNoteButton />
-      <NoteList />
+      <NoteList notes={state.rootNotes} />
     </Box>
   );
 }

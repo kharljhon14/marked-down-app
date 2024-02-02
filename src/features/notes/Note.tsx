@@ -4,12 +4,14 @@ import { NoteData } from '@/types/note';
 import { Box, Container, Heading, Text, VStack } from '@chakra-ui/react';
 import { DateTime } from 'luxon';
 import { DragEvent } from 'react';
+import NoteList from './NoteList';
 
 interface Props {
   note: NoteData;
+  depth: number;
 }
 
-export default function Note({ note }: Props) {
+export default function Note({ note, depth }: Props) {
   const state = useNotesState();
   const dispatch = useNotesDispatch();
 
@@ -55,50 +57,60 @@ export default function Note({ note }: Props) {
   };
 
   return (
-    <Box
-      w="100%"
-      bg="blue.100"
-      borderRadius=".8rem"
-      shadow="lg"
-      p="1.2rem"
-      draggable
-      onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
-      onDrop={handleDrop}
-      onDragOver={handleDragOver}
-      onDragEnter={handleDragEnter}
-      onDragLeave={handleDragLeave}
-    >
-      <VStack
-        spacing={4}
-        align="stretch"
+    <Box w="100%">
+      <Box
+        w="100%"
+        bg="blue.100"
+        borderRadius=".8rem"
+        shadow="lg"
+        p="1.2rem"
+        draggable
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        onDragEnter={handleDragEnter}
+        onDragLeave={handleDragLeave}
+        mb=".6rem"
       >
-        <Box>
-          <Heading size="lg">{note.title}</Heading>
-          <Text
-            color="gray.500"
-            fontSize="xs"
-          >
-            {note.id}
-          </Text>
-        </Box>
-
-        <Text>{note.content}</Text>
-
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          fontSize="sm"
-          color="gray.500"
+        <VStack
+          spacing={4}
+          align="stretch"
         >
-          <Text>Created at: {note.created_at.toLocaleString(DateTime.DATETIME_SHORT)}</Text>
-          <Text>Updated at: {note.updated_at.toLocaleString(DateTime.DATETIME_SHORT)}</Text>
-        </Box>
+          <Box>
+            <Heading size="lg">{note.title}</Heading>
+            <Text
+              color="gray.500"
+              fontSize="xs"
+            >
+              {note.id}
+            </Text>
+          </Box>
 
-        <Text>
-          Status: <span className="font-bold">{note.is_published ? 'Published' : 'Draft'}</span>
-        </Text>
-      </VStack>
+          <Text>{note.content}</Text>
+
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            fontSize="sm"
+            color="gray.500"
+          >
+            <Text>Created at: {note.created_at.toLocaleString(DateTime.DATETIME_SHORT)}</Text>
+            <Text>Updated at: {note.updated_at.toLocaleString(DateTime.DATETIME_SHORT)}</Text>
+          </Box>
+
+          <Text>
+            Status: <span className="font-bold">{note.is_published ? 'Published' : 'Draft'}</span>
+          </Text>
+        </VStack>
+      </Box>
+
+      {note.child_notes.length > 0 && (
+        <NoteList
+          notes={note.child_notes}
+          depth={depth + 1}
+        />
+      )}
     </Box>
   );
 }
