@@ -34,6 +34,11 @@ export default function Note({ note }: Props) {
     await updateParent(state.currentDragId, note.id);
 
     // Dispatch change parent event
+
+    dispatch({
+      type: 'change_parent',
+      payload: { newParentId: note.id, currentDragId: state.currentDragId },
+    });
   };
 
   const handleDragOver = (e: DragEvent) => {

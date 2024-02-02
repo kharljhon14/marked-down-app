@@ -4,10 +4,16 @@ import { Dispatch, PropsWithChildren, createContext, useContext, useReducer } fr
 interface NotesState {
   rootNotes: Array<NoteData>;
   currentDragId: string | null;
+  notesMap: Map<string, NoteData>;
 }
 
 interface ActionPayload<T> {
-  type: 'set_root_notes' | 'add_new_note_to_root_notes' | 'sort_notes' | 'update_current_drag_id';
+  type:
+    | 'set_root_notes'
+    | 'add_new_note_to_root_notes'
+    | 'sort_notes'
+    | 'update_current_drag_id'
+    | 'change_parent';
   payload: T;
 }
 
@@ -30,7 +36,15 @@ export function useNotesDispatch() {
   return context;
 }
 
+function addNotesToCache(notesMap: Map<string, NoteData>, notes: Array<NoteData>) {
+  notes.forEach((note) => {
+    notesMap.set(note.id, note);
+  });
+}
+
 function setRootNotes(state: NotesState, action: ActionPayload<Array<NoteData>>) {
+  addNotesToCache(state.notesMap, action.payload);
+
   return {
     ...state,
     rootNotes: action.payload,
@@ -38,6 +52,8 @@ function setRootNotes(state: NotesState, action: ActionPayload<Array<NoteData>>)
 }
 
 function addNewNoteToRootNotes(state: NotesState, action: ActionPayload<NoteData>) {
+  addNotesToCache(state.notesMap, [action.payload]);
+
   const newRootNotes = [...state.rootNotes];
 
   newRootNotes.unshift(action.payload);
@@ -85,6 +101,25 @@ function updateCurrentDragId(state: NotesState, action: ActionPayload<string>) {
   };
 }
 
+function changeParent(
+  state: NotesState,
+  action: ActionPayload<{ newParentId: string; currentDragId: string }>
+) {
+  // Get currently dragging note
+
+  // Get old parent
+
+  // Get new Parent
+
+  // Remove the currently dragging note from old parent
+
+  // Add the currently dragging note to new parent
+
+  return {
+    ...state,
+  };
+}
+
 function reducer(state: NotesState, action: ActionPayload<any>) {
   switch (action.type) {
     case 'set_root_notes':
@@ -99,6 +134,9 @@ function reducer(state: NotesState, action: ActionPayload<any>) {
     case 'update_current_drag_id':
       return updateCurrentDragId(state, action);
 
+    case 'change_parent':
+      return changeParent(state, action);
+
     default:
       return state;
   }
@@ -107,6 +145,7 @@ function reducer(state: NotesState, action: ActionPayload<any>) {
 const initialState: NotesState = {
   rootNotes: [],
   currentDragId: null,
+  notesMap: new Map<string, NoteData>(),
 };
 
 export function NotesProvider({ children }: PropsWithChildren) {
