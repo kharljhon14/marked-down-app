@@ -1,3 +1,4 @@
+import { useNotesDispatch, useNotesState } from '@/context/notesContext';
 import { NoteData } from '@/types/note';
 import { Box, Container, Heading, Text, VStack } from '@chakra-ui/react';
 import { DateTime } from 'luxon';
@@ -8,8 +9,12 @@ interface Props {
 }
 
 export default function Note({ note }: Props) {
+  const state = useNotesState();
+  const dispatch = useNotesDispatch();
+
   const handleDragStart = (e: DragEvent) => {
     console.log('Drag Start');
+    dispatch({ type: 'update_current_drag_id', payload: note.id });
   };
 
   const handleDragEnd = (e: DragEvent) => {
@@ -17,10 +22,12 @@ export default function Note({ note }: Props) {
   };
 
   const handleDrop = (e: DragEvent) => {
-    console.log('Drop');
+    console.log('Drop', note.id);
+    console.log('Current Drag Id', state.currentDragId);
   };
 
   const handleDragOver = (e: DragEvent) => {
+    e.preventDefault();
     console.log('Drag Over');
   };
 

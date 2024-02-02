@@ -3,10 +3,11 @@ import { Dispatch, PropsWithChildren, createContext, useContext, useReducer } fr
 
 interface NotesState {
   rootNotes: Array<NoteData>;
+  currentDragId: string | null;
 }
 
 interface ActionPayload<T> {
-  type: 'set_root_notes' | 'add_new_note_to_root_notes' | 'sort_notes';
+  type: 'set_root_notes' | 'add_new_note_to_root_notes' | 'sort_notes' | 'update_current_drag_id';
   payload: T;
 }
 
@@ -77,6 +78,13 @@ function sortNotesRecursively(notes: Array<NoteData>, sortKey: string) {
   });
 }
 
+function updateCurrentDragId(state: NotesState, action: ActionPayload<string>) {
+  return {
+    ...state,
+    currentDragId: action.payload,
+  };
+}
+
 function reducer(state: NotesState, action: ActionPayload<any>) {
   switch (action.type) {
     case 'set_root_notes':
@@ -88,6 +96,9 @@ function reducer(state: NotesState, action: ActionPayload<any>) {
     case 'sort_notes':
       return sortNotes(state, action);
 
+    case 'update_current_drag_id':
+      return updateCurrentDragId(state, action);
+
     default:
       return state;
   }
@@ -95,6 +106,7 @@ function reducer(state: NotesState, action: ActionPayload<any>) {
 
 const initialState: NotesState = {
   rootNotes: [],
+  currentDragId: null,
 };
 
 export function NotesProvider({ children }: PropsWithChildren) {
