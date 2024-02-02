@@ -13,7 +13,8 @@ interface ActionPayload<T> {
     | 'add_new_note_to_root_notes'
     | 'sort_notes'
     | 'update_current_drag_id'
-    | 'change_parent';
+    | 'change_parent'
+    | 'add_child_notes_to_note';
   payload: T;
 }
 
@@ -149,6 +150,23 @@ function changeParent(
   return newState;
 }
 
+function addChildNotesToNote(
+  state: NotesState,
+  action: ActionPayload<{ parentId: string; childNotes: Array<NoteData> }>
+) {
+  addNotesToCache(state.notesMap, action.payload.childNotes);
+
+  const newState = {
+    ...state,
+  };
+
+  const note = newState.notesMap.get(action.payload.parentId);
+
+  if (note) note.child_notes = action.payload.childNotes;
+
+  return newState;
+}
+
 function reducer(state: NotesState, action: ActionPayload<any>) {
   switch (action.type) {
     case 'set_root_notes':
@@ -165,6 +183,9 @@ function reducer(state: NotesState, action: ActionPayload<any>) {
 
     case 'change_parent':
       return changeParent(state, action);
+
+    case 'add_child_notes_to_note':
+      return addChildNotesToNote(state, action);
 
     default:
       return state;

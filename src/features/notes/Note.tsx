@@ -1,9 +1,9 @@
 import { useNotesDispatch, useNotesState } from '@/context/notesContext';
-import { updateParent } from '@/lib/client/api';
+import { fetchNotes, updateParent } from '@/lib/client/api';
 import { NoteData } from '@/types/note';
-import { Box, Container, Heading, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, Container, Heading, Text, VStack } from '@chakra-ui/react';
 import { DateTime } from 'luxon';
-import { DragEvent } from 'react';
+import { DragEvent, MouseEvent } from 'react';
 import NoteList from './NoteList';
 
 interface Props {
@@ -56,6 +56,18 @@ export default function Note({ note, depth }: Props) {
     console.log('Drag Leave');
   };
 
+  const handleExpand = async (e: MouseEvent) => {
+    const childNotes = await fetchNotes(note.id);
+
+    dispatch({
+      type: 'add_child_notes_to_note',
+      payload: {
+        parentId: note.id,
+        childNotes,
+      },
+    });
+  };
+
   return (
     <Box w="100%">
       <Box
@@ -104,6 +116,15 @@ export default function Note({ note, depth }: Props) {
           </Text>
         </VStack>
       </Box>
+
+      {note.child_count > 0 && (
+        <Button
+          colorScheme="blue"
+          onClick={handleExpand}
+        >
+          Expand
+        </Button>
+      )}
 
       {note.child_notes.length > 0 && (
         <NoteList
