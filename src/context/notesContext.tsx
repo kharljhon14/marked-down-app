@@ -88,7 +88,7 @@ function sortNotesRecursively(notes: Array<NoteData>, sortKey: string) {
   });
 
   notes.forEach((note) => {
-    if (note.child_count > 0) {
+    if (note.child_notes.length > 0) {
       sortNotesRecursively(note.child_notes, sortKey);
     }
   });
@@ -133,12 +133,18 @@ function changeParent(
       1
     );
   } else {
-    newState.rootNotes.splice(newState.rootNotes.findIndex((note) => note.id === currentDragId));
+    newState.rootNotes.splice(
+      newState.rootNotes.findIndex((note) => note.id === currentDragId),
+      1
+    );
   }
 
   // Add the currently dragging note to new parent
 
   newParent.child_notes.push(currentDraggingNote);
+  currentDraggingNote.parent_id = newParent.id;
+
+  console.log(newState);
 
   return newState;
 }
