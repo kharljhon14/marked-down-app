@@ -5,6 +5,7 @@ import { Box, Button, Container, Heading, Text, VStack } from '@chakra-ui/react'
 import { DateTime } from 'luxon';
 import { DragEvent, MouseEvent } from 'react';
 import NoteList from './NoteList';
+import { fa } from '@faker-js/faker';
 
 interface Props {
   note: NoteData;
@@ -14,6 +15,29 @@ interface Props {
 export default function Note({ note, depth }: Props) {
   const state = useNotesState();
   const dispatch = useNotesDispatch();
+
+  /**
+   * Check if noteA is a descendant of noteB
+   * @param notesMap
+   * @param notaA
+   * @param noteB
+   * @returns
+   */
+  const checkIfNoteIsDescendant = (
+    notesMap: Map<string, NoteData>,
+    notaA?: NoteData,
+    noteB?: NoteData
+  ) => {
+    let curNote = notaA;
+
+    while (curNote?.parent_id) {
+      curNote = notesMap.get(curNote.parent_id);
+
+      if (curNote?.id === noteB?.id) return true;
+    }
+
+    return false;
+  };
 
   const handleDragStart = (e: DragEvent) => {
     console.log('Drag Start');
@@ -30,8 +54,16 @@ export default function Note({ note, depth }: Props) {
     console.log('Drop', note.id);
     console.log('Current Drag Id', state.currentDragId);
 
-    // [Todo] Check if target note is descendant of current dragging note
-
+    if (
+      checkIfNoteIsDescendant(
+        state.notesMap,
+        state.notesMap.get(note.id),
+        state.notesMap.get(state.currentDragId)
+      )
+    ) {
+      alert('Invalid action');
+      return;
+    }
     // Update parent api call
     await updateParent(state.currentDragId, note.id);
 
