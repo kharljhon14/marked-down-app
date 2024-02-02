@@ -22,8 +22,16 @@ export default function Note({ note }: Props) {
   };
 
   const handleDrop = (e: DragEvent) => {
+    if (note.id === state.currentDragId) return;
+
     console.log('Drop', note.id);
     console.log('Current Drag Id', state.currentDragId);
+
+    // [Todo] Check if target note is descendant of current dragging note
+
+    // Update parent api call
+
+    // Dispatch change parent event
   };
 
   const handleDragOver = (e: DragEvent) => {
