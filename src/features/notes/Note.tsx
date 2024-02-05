@@ -6,6 +6,7 @@ import { DateTime } from 'luxon';
 import { DragEvent, MouseEvent } from 'react';
 import NoteList from './NoteList';
 import { fa } from '@faker-js/faker';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 interface Props {
   note: NoteData;
@@ -13,6 +14,9 @@ interface Props {
 }
 
 export default function Note({ note, depth }: Props) {
+  const pathName = usePathname();
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const state = useNotesState();
   const dispatch = useNotesDispatch();
 
@@ -100,6 +104,13 @@ export default function Note({ note, depth }: Props) {
     });
   };
 
+  const handleClick = (e: MouseEvent, id: string) => {
+    e.stopPropagation();
+    const params = new URLSearchParams(searchParams);
+    params.set('note_id', id);
+    router.replace(`${pathName}?${params.toString()}`);
+  };
+
   return (
     <Box w="100%">
       <Box
@@ -116,6 +127,8 @@ export default function Note({ note, depth }: Props) {
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
         mb=".6rem"
+        cursor="pointer"
+        onClick={(e) => handleClick(e, note.id)}
       >
         <VStack
           spacing={4}
